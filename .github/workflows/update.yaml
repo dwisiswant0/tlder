@@ -1,0 +1,45 @@
+name: Update DB
+on:
+  schedule:
+    - cron: "0 0 * * 0" # at 00:00 on Sunday
+  workflow_dispatch:
+
+jobs: 
+  update: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Install dependencies"
+        run: sudo apt install curl -y
+
+      - name: "Check for updates"
+        run: |
+          if [[ "$(curl -skL ${{ secrets.LOCAL_DB }} | wc -l)" == "$(curl -skL ${{ secrets.REMOTE_DB }} | wc -l)" ]]; then
+            echo "::set-output name=isUpdated::true"
+          else
+            echo "::set-output name=isUpdated::false"
+          fi
+
+          echo "::set-output name=date::$(date)"
+
+      - name: "Check out code"
+        # if: steps.check.isUpdated == 'false'
+        uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+
+      - name: "Update DB..."
+        env:
+          isUpdated: ${{ steps.check.isUpdated }}
+          COMMIT_MSG: "db: Update DB ${{ steps.check.date }}"
+        run: curl -kLo db/tlds.txt ${{ secrets.REMOTE_DB }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          branch-suffix: "short-commit-hash"
+          branch: "update/db"
+          commit-message: "db: Update DB ${{ steps.check.date }}"
+          committer: "Dwi Siswanto <me@dw1.io>"
+          delete-branch: true
+          reviewers: "dwisiswant0"
+          title: "db: Update DB ${{ steps.check.date }}"
