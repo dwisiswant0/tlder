@@ -36,6 +36,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
+          body: "Automated update TLDs data."
           branch-suffix: "short-commit-hash"
           branch: "update/db"
           commit-message: "db: Update DB ${{ steps.check.date }}"
