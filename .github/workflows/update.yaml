@@ -14,12 +14,12 @@ jobs:
       - name: "Check for updates"
         run: |
           if [[ "$(curl -skL ${{ secrets.LOCAL_DB }} | wc -l)" == "$(curl -skL ${{ secrets.REMOTE_DB }} | wc -l)" ]]; then
-            echo "::set-output name=isUpdated::true"
+            echo ::set-output name=isUpdated::true
           else
-            echo "::set-output name=isUpdated::false"
+            echo ::set-output name=isUpdated::false
           fi
 
-          echo "::set-output name=date::$(date)"
+          echo ::set-output name=date::$(date)
 
       - name: "Check out code"
         # if: steps.check.isUpdated == 'false'
