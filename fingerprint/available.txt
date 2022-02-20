@@ -1,0 +1,37 @@
+220 available
+available for purchase
+but this server does not have
+domain not found
+domain status: free
+dominio no se encuentra registrado
+error.
+invalid domain name
+invalid input
+invalid query or domain not known
+is available for registration
+is free
+name or service not known
+no data found
+no data was found
+no entries found
+no found
+no information available about domain name
+no match
+no matching record
+no object found
+no such domain
+not find matchingrecord
+not found
+not registered
+nothing found
+object does not exist
+object_not_found
+status: available
+status: free
+temporary failure in name resolution
+the domain has not been registered
+the queried object does not exist
+the requested domain was not found in the registry
+this domain name has not been registered
+this is not a registered domain
+was not found

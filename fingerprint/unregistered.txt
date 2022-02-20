@@ -1,0 +1,52 @@
+220 Available
+Available
+AVAILABLE
+available for purchase
+but this server does not have
+Domain not found
+DOMAIN NOT FOUND
+DOMINIO NO REGISTRADO
+Error.
+free
+Invalid domain name
+Invalid input
+Invalid pattern
+Invalid query or domain name not known
+Invalid query or domain name not known in Dominio GQ Domain Registry
+Invalid query or domain name not known in Dot TK Domain Registry
+Invalid query or domain name not known in My GA Domain Registry
+is available for registration
+is free
+Name or service not known
+No Data Found
+No data was found to match the request criteria
+no entries found
+No entries found
+No Found
+No information available about domain name
+No match
+NO MATCH
+No match for
+No matching record
+No Object Found
+NO OBJECT FOUND
+No such domain
+Not find MatchingRecord
+not found
+Not found
+Not Found
+NOT FOUND
+not found in database
+not registered
+Not Registered
+nothing found
+Nothing found for this query
+Object does not exist
+Object_Not_Found
+Temporary failure in name resolution
+The domain has not been registered.
+The queried object does not exist
+The requested domain was not found in the Registry
+This domain name has not been registered
+This is not a Registered Domain under LK Domain Registry
+was not found
