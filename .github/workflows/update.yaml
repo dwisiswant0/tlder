@@ -28,9 +28,11 @@ jobs:
           fetch-depth: 0
 
       - name: "Update DB..."
+        if: steps.check.isUpdated == 'false'
         run: curl -kLo db/tlds.txt ${{ secrets.REMOTE_DB }}
 
       - name: Create Pull Request
+        if: steps.check.isUpdated == 'false'
         uses: peter-evans/create-pull-request@v3
         with:
           body: "Automated update TLDs data."
