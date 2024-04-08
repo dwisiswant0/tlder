@@ -4,6 +4,9 @@ on:
     - cron: "0 0 * * 0" # at 00:00 on Sunday
   workflow_dispatch:
 
+env:
+  DB_PATH: db/tlds.txt
+
 jobs: 
   update: 
     runs-on: ubuntu-latest
@@ -11,35 +14,40 @@ jobs:
       - name: "Install dependencies"
         run: sudo apt install curl -y
 
+      - name: "Check out code"
+        uses: actions/checkout@v4
+
       - name: "Check for updates"
+        id: check
         run: |
-          if [[ "$(curl -skL ${{ secrets.LOCAL_DB }} | wc -l)" == "$(curl -skL ${{ secrets.REMOTE_DB }} | wc -l)" ]]; then
-            echo "::set-output name=isUpdated::true"
+          local_ver="$(grep -oP '^# Version \K\d+' ${{ env.DB_PATH }})"
+          remote_ver="$(curl -sr 0-20 ${{ secrets.REMOTE_DB }} | grep -oP '^# Version \K\d+')"
+
+          echo -e "Date: $(date)"
+          echo -e "Local version: ${local_ver}"
+          echo -e "Remote version: ${remote_ver}"
+
+          if [[ "${local_ver}" -lt "${remote_ver}" ]]; then
+            echo "isUpdated=false" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=isUpdated::false"
+            echo "isUpdated=true" >> $GITHUB_OUTPUT
           fi
 
-          echo "::set-output name=date::$(date)"
-
-      - name: "Check out code"
-        if: steps.check.isUpdated == 'false'
-        uses: actions/checkout@v2
-        with: 
-          fetch-depth: 0
-
+          echo "remoteVersion=${remote_ver}" >> $GITHUB_OUTPUT
+ 
       - name: "Update DB..."
-        if: steps.check.isUpdated == 'false'
-        run: curl -kLo db/tlds.txt ${{ secrets.REMOTE_DB }}
+        if: steps.check.outputs.isUpdated == 'false'
+        run: curl -kLo ${{ env.DB_PATH }} ${{ secrets.REMOTE_DB }}
 
       - name: Create Pull Request
-        if: steps.check.isUpdated == 'false'
+        if: steps.check.outputs.isUpdated == 'false'
         uses: peter-evans/create-pull-request@v3
         with:
           body: "Automated update TLDs data."
           branch-suffix: "short-commit-hash"
           branch: "update/db"
-          commit-message: "db: Update DB ${{ steps.check.date }}"
-          committer: "Dwi Siswanto <me@dw1.io>"
+          commit-message: "db: Update DB to version ${{ steps.check.outputs.remoteVersion }}"
+          committer: "ghost <ghost@users.noreply.github.com>"
           delete-branch: true
           reviewers: "dwisiswant0"
-          title: "db: Update DB ${{ steps.check.date }}"
+          title: "db: Update DB ${{ steps.check.outputs.remoteVersion }}"
