@@ -5,7 +5,7 @@ TLDs finder — check domain name availability across all valid top-level domain
 ## Installation
 
 - Get pre-built binary from [releases page](https://github.com/dwisiswant0/tlder/releases), or
-- If you have [Go1.17+](https://go.dev/dl/) compiler installed & configured: `go install github.com/dwisiswant0/tlder@latest`.
+- If you have [Go1.19+](https://go.dev/dl/) compiler installed & configured: `go install github.com/dwisiswant0/tlder@latest`.
 
 ## Usage
 
