@@ -37,7 +37,13 @@ jobs:
  
       - name: "Update DB..."
         if: steps.check.outputs.isUpdated == 'false'
-        run: curl -kLo ${{ env.DB_PATH }} ${{ secrets.REMOTE_DB }}
+        run: |
+          curl -kLo ${{ env.DB_PATH }} ${{ secrets.REMOTE_DB }}
+          insertions=$(git diff --stat ${{ env.DB_PATH }} | awk '/insertions/ {print $4}')
+          if [[ "${insertions}" -lt 1 ]]; then
+            echo "isUpdated=true" >> $GITHUB_OUTPUT
+            git stash
+          fi
 
       - name: Create Pull Request
         if: steps.check.outputs.isUpdated == 'false'
